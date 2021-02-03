@@ -6,7 +6,7 @@
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="revised" content="2021-02-03T11:15:10 CST">
-<title>Get Started :: Singleton</title>
+<title> :: Singleton</title>
 <link rel="shortcut icon" href="https://vmware.github.io/singleton/images/favicon.png" type="image/x-icon" />
 <link href="https://vmware.github.io/singleton/css/font-awesome.min.css" rel="stylesheet">
 <link href="https://vmware.github.io/singleton/css/nucleus.css" rel="stylesheet">
@@ -25,7 +25,7 @@
 
     
   </head>
-  <body data-url="/docs/get-started/">
+  <body data-url="/docs/overview/singleton-service/singleton-service-s3/">
     
       <header>
   <div class="logo">
@@ -71,11 +71,10 @@
             <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
       </div>
         <ul>
-    <li data-nav-id="/docs/get-started/" class="dd-item parent active haschildren
+    <li data-nav-id="/docs/get-started/" class="dd-item haschildren
         ">
       <div>
-      <a href="https://vmware.github.io/singleton/docs/get-started/">Get Started</a>
-            <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      <a href="https://vmware.github.io/singleton/docs/get-started/">Get Started</a><i class="fa fa-angle-right fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
       </div>
         <ul>
       <li data-nav-id="/docs/get-started/download-and-installation/" class="dd-item">
@@ -94,16 +93,18 @@
     </li>
         </ul>
     </li>
-    <li data-nav-id="/docs/overview/" class="dd-item haschildren
+    <li data-nav-id="/docs/overview/" class="dd-item parent haschildren
         ">
       <div>
-      <a href="https://vmware.github.io/singleton/docs/overview/">Overview</a><i class="fa fa-angle-right fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      <a href="https://vmware.github.io/singleton/docs/overview/">Overview</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
       </div>
         <ul>
-    <li data-nav-id="/docs/overview/singleton-service/" class="dd-item haschildren
+    <li data-nav-id="/docs/overview/singleton-service/" class="dd-item parent haschildren
         ">
       <div>
-      <a href="https://vmware.github.io/singleton/docs/overview/singleton-service/">Singleton Service</a><i class="fa fa-angle-right fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      <a href="https://vmware.github.io/singleton/docs/overview/singleton-service/">Singleton Service</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
       </div>
         <ul>
       <li data-nav-id="/docs/overview/singleton-service/singleton-service-db-build-introducation/" class="dd-item">
@@ -170,7 +171,7 @@
           </a><i class="fa fa-circle-thin read-icon"></i>
         </div>
     </li>
-      <li data-nav-id="/docs/overview/singleton-service/singleton-service-s3/" class="dd-item">
+      <li data-nav-id="/docs/overview/singleton-service/singleton-service-s3/" class="dd-item active">
         <div>
           <a href="https://vmware.github.io/singleton/docs/overview/singleton-service/singleton-service-s3/">
             
@@ -426,15 +427,27 @@
           
     <option value="/docs/" >
    Documentation</option> 
-    <option value="/docs/get-started/"  selected>
+    <option value="/docs/get-started/" >
   - 
-   Get Started</option> 
-      <option value="/docs/get-started/download-and-installation/" >-- Download and Installation</option>
-      <option value="/docs/get-started/quick-start/" >-- Quick Start</option>
-  
+   Get Started</option>
     <option value="/docs/overview/" >
   - 
-   Overview</option>
+   Overview</option> 
+    <option value="/docs/overview/singleton-service/" >
+  -- 
+   Singleton Service</option> 
+      <option value="/docs/overview/singleton-service/singleton-service-db-build-introducation/" >--- DB builder for User guideline</option>
+      <option value="/docs/overview/singleton-service/singleton-service-script/" >--- Singleton Service Script</option>
+    <option value="/docs/overview/singleton-service/configurations/" >
+  --- 
+   Configurations</option>
+      <option value="/docs/overview/singleton-service/singleton-service-apis/" >--- Singleton Service APIs</option>
+      <option value="/docs/overview/singleton-service/singleton-service-s3/"  selected>--- </option>
+  
+    <option value="/docs/overview/singleton-sdk/" >
+  -- 
+   Singleton SDK</option>
+  
     <option value="/docs/tutorials/" >
   - 
    Tutorials</option>
@@ -461,79 +474,211 @@
       </div>
     
 
-    <h1>Get Started</h1>
+    <h1></h1>
     
     
     
+    <h1 id="how-to-use-encrypt-aws-s3-access-key-and-secretkey-in-singleton-service">How to use encrypt AWS S3 access key and secretkey in singleton service</h1>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>
+<p><a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">Java 8</a> (Java 9+ are not supported, will get compiler issue)</p>
+</li>
+<li>
+<p><a href="https://git-scm.com/downloads">Git</a></p>
+</li>
+<li>
+<p>Singleton S3 server</p>
+</li>
+<li>
+<p>S3 configurations (accessKey, secretkey, region, bucketName)</p>
+</li>
+</ul>
+<h2 id="1-encrypt-the-aws-s3-accesskey-and-secretkey">1. Encrypt the AWS S3 accessKey and secretkey</h2>
+<p>You can use the java language RSA crypt generate the private.key public.key and access key and secretkey by yourself.</p>
+<p>The demo code as following:</p>
+<pre><code>import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+public class RsaCryptUtils {
+    private static final String CHARSET = &quot;utf-8&quot;;
+    private static final Base64.Decoder decoder64 = Base64.getDecoder();
+    private static final Base64.Encoder encoder64 = Base64.getEncoder();
+    /**
+     * create SecretKey
+     * @param keySize
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    public static SecretKey generateSecretKey(int keySize) throws NoSuchAlgorithmException {
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance(&quot;RSA&quot;);
+        keyGen.initialize(keySize, new SecureRandom());
+        KeyPair pair = keyGen.generateKeyPair();
+        PrivateKey privateKey = pair.getPrivate();
+        PublicKey publicKey = pair.getPublic();
+        return new SecretKey(encoder64.encodeToString(publicKey.getEncoded()),     encoder64.encodeToString(privateKey.getEncoded()));
+    }
+    /**
+     * encrypt Data by private key
+     * @param data
+     * @param privateInfoStr
+     * @return
+     * @throws IOException
+     * @throws InvalidCipherTextException
+     */
+    public static String encryptData(String data, String privateInfoStr) throws IOException, InvalidKeySpecException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, BadPaddingException, IllegalBlockSizeException {
+     
+        Cipher cipher = Cipher.getInstance(&quot;RSA/ECB/PKCS1Padding&quot;);
+        cipher.init(Cipher.ENCRYPT_MODE, getPrivateKey(privateInfoStr));
+        return encoder64.encodeToString(cipher.doFinal(data.getBytes(CHARSET)));
+    }
+     
+    /**
+     * decrypt Data by public key
+     * @param data
+     * @param publicInfoStr
+     * @return
+     */
+    public static String decryptData(String data, String publicInfoStr) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, UnsupportedEncodingException {
+        byte[] encryptDataBytes=decoder64.decode(data.getBytes(CHARSET));
+        Cipher cipher = Cipher.getInstance(&quot;RSA/ECB/PKCS1Padding&quot;);
+        cipher.init(Cipher.DECRYPT_MODE, getPublicKey(publicInfoStr));
+        return new String(cipher.doFinal(encryptDataBytes), CHARSET);
+    }
+    private static PublicKey getPublicKey(String base64PublicKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(base64PublicKey.getBytes()));
+        KeyFactory keyFactory = KeyFactory.getInstance(&quot;RSA&quot;);
+        return keyFactory.generatePublic(keySpec);
+    }
+    private static PrivateKey getPrivateKey(String base64PrivateKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        PrivateKey privateKey = null;
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(base64PrivateKey.getBytes()));
+        KeyFactory keyFactory = null;
+        keyFactory = KeyFactory.getInstance(&quot;RSA&quot;);
+        privateKey = keyFactory.generatePrivate(keySpec);
+        return privateKey;
+    }
+     
+    /**
+     * Secret key model
+     */
+    public static class SecretKey {
+        /**
+         * public key
+         */
+        private String publicKey;
+        /**
+         *private Key
+         */
+        private String privateKey;
+     
+        public SecretKey(String publicKey, String privateKey) {
+            this.publicKey = publicKey;
+            this.privateKey = privateKey;
+        }
+     
+        public String getPublicKey() {
+            return publicKey;
+        }
+     
+        public void setPublicKey(String publicKey) {
+            this.publicKey = publicKey;
+        }
+     
+        public String getPrivateKey() {
+            return privateKey;
+        }
+     
+        public void setPrivateKey(String privateKey) {
+            this.privateKey = privateKey;
+        }
+     
+        @Override
+        public String toString() {
+            return &quot;SecretKey{&quot; +
+                    &quot;publicKey='&quot; + publicKey + '\'' +
+                    &quot;, privateKey='&quot; + privateKey + '\'' +
+                    '}';
+        }
+    }
+    public static void main(String[] args) throws Exception {
+    	SecretKey sk = generateSecretKey(1024);
+    	System.out.println(sk.getPublicKey());
+    	String encrytContent = &quot;&quot;;
+    	String result = encryptData(encrytContent, sk.getPrivateKey());
+    	System.out.println(result);
+    }
 
-
-
-<div class="extra-pagination inner">
-<nav class="pagination" role="navigation">
-	
-	<span class="page-number">Page 1 of 1</span>
-	
-</nav>
-
-</div>
-
-
-   <article class="post docs">
-    <header class="post-header">
-        <h2 class="post-title"><a href="https://vmware.github.io/singleton/docs/get-started/download-and-installation/">Download and Installation</a></h2>
-    </header>
-    <section class="post-excerpt">
-        <p>Singleton official 0.1.0 Release is available now! Choose the download that&rsquo;s right for you and click one of the links below.
-Singleton Service 0.1.0 Binaries Downloading    filename sha1 hash branch/tag     singleton-manager-i18n-0.1.0.jar 8e7599495292ce34cdb9769ec43695999071a1fe master/v0.1.0-Singleton-Service   singleton-manager-l10n-0.1.0.jar 8d744bb83e310a1b451a68fb65999803488c8cfc master/v0.1.0-Singleton-Service    Installation Singleton Service include 2 types of builds, one is i18n manager, the other is l10n manager:
- I18n manager is the main build, it provides the restful APIs to talk with Singleton SDK. <a class="read-more" href="https://vmware.github.io/singleton/docs/get-started/download-and-installation/">&raquo;</a></p>
-    </section>
-    <footer class=" footline" >
-         
-        
-
-        
-        
-
-    </footer>
-</article>
-
-   <article class="post docs">
-    <header class="post-header">
-        <h2 class="post-title"><a href="https://vmware.github.io/singleton/docs/get-started/quick-start/">Quick Start</a></h2>
-    </header>
-    <section class="post-excerpt">
-        <p>The Singleton application suite includes:
- Singleton Service: It contains an Application Program Interface (API), which is a web service that is used for i18n features, such as providing translated text. Singleton Client: It is used to communicate with Singleton Service to get the localized resources.  Features and functionality Singleton offers the following features and functionality:
- Singleton Core API - Provides RESTful web services for delivering localized resources. Source collection - Offers a source collection feature for Singleton string-based APIs. <a class="read-more" href="https://vmware.github.io/singleton/docs/get-started/quick-start/">&raquo;</a></p>
-    </section>
-    <footer class=" footline" >
-         
-        
-
-        
-        
-
-    </footer>
-</article>
-
-
-<div style="margin-bottom:2rem"></div>
-
-<nav class="pagination" role="navigation">
-	
-	<span class="page-number">Page 1 of 1</span>
-	
-</nav>
-
-
-
+}
+</code></pre><p>We recommend  use the g11n-s3keys-crypt tools generate it.</p>
+<h3 id="use-g11n-s3keys-crypt-tools-generate-accesskey-and-secretkey">Use g11n-s3keys-crypt tools generate accessKey and secretkey</h3>
+<p>Building  g11n-s3keys-crypt from source code</p>
+<p>Clone the repository using Git.</p>
+<pre><code>git clone https://gitlab.eng.vmware.com/g11n-vip/g11n-s3keys-crypt.git
+Or
+git clone git@gitlab.eng.vmware.com:g11n-vip/g11n-s3keys-crypt.git
+</code></pre><p>Go to g11n-s3keys-crypt to run a build using Gradle.</p>
+<pre><code>cd g11n-s3keys-crypt
+./gradlew build
+</code></pre><p>Jar files will be generated inside the following location:</p>
+<pre><code>g11n-s3keys-crypt/build/libs (Eg. g11n-s3keys-crypt/build/libs/g11n-s3keys-crypt.jar)
+</code></pre><h3 id="how-to-use-g11n-s3keys-crypt">How to use g11n-s3keys-crypt</h3>
+<p>Prepare the input file and the file formatting is properties(Eg. input.properties)</p>
+<pre><code>s3.password.accessKey=#####
+s3.password.secretkey=######
+</code></pre><p>Run the g11n-s3keys-crypt</p>
+<pre><code> cd g11n-s3keys-crypt/build/libs 
+ java -jar g11n-s3keys-crypt.jar inputFile=./input.properties
+</code></pre><p>You can find output.properties under current Directory</p>
+<pre><code>cd g11n-s3keys-crypt/build/libs 
+ls
+ g11n-s3keys-crypt.jar input.properties output.properties private.key public.key
+</code></pre><p>The result from output file</p>
+<pre><code>#Mon Nov 30 11:14:57 CST 2020
+s3.password.accessKey=JmrCnC4h+nUb8nq8o65UCUDua7TtCTNzy5zwwsbLOvX5xCZOs/DcQSHM6yBLvO5sF1eQ2KR2BvXcPQQYUafMm/AXAJGgr1dmvGLVieo/ulLJ0Uol0ohIPM3/UO/jXh4uo6V3Rd/sdM7OwUP9CCit+wK4pY9+tQ64gS55Kh8XUAx0YMSwAlgCA6796A6fAOHIjw3Y5U7aPgPLRKFAJJIiaQbRg019eqFQJ+ihF245L7F2Hjc2t2fOWuNlpWCQ5QIjOuNvbG5b72cBkB7CCTNWLtddgQ75eTH1PNb65EDHGgLbURBYTD9HfMT3y+74OfA3MkpGIZNFm4lzb5qlX1gAEQ\=\=
+s3.password.secretkey=n0rn+nam61O7c6Bz2+pAOqVCwaJjjKsczNLAggGPPh+g9Kc+knWJfhSK7cStetbmseWCTG758dDss2N02exPx6j7/4pYELyMfYQFFl0xCCdfu5ySPjSD1fqzcprAH/yQJhGAvUIonUZMB24DsrZkA8bImVZ9hxoz4wXhCC0sKif9FON+oIsic/WgLs1NuDsiFwivHq+bEMZjzLQOd9/ZL7wGd7QZmgDW18bHLyzezETXjzazjK6o0ekQ/KF/4sZLn7yUGVIuG9XEI6xeMtvd3hx/Bit55enMAk9AsnpmGZJ4BQne3eCjKbVueRKqFwMx0jDKGsE5wQe3dp8td5H7Ww\=\=
+</code></pre><h2 id="2how-to-configuration-in-singleton-s3-server">2.How to configuration in singleton s3 server</h2>
+<p>Move the public.key file to singleton.jar directory</p>
+<pre><code>ls 
+singleton.jar public.key
+</code></pre><p>Change accessKey, secretkey Encrypt content and the publicKey&rsquo;s path to i18n manager S3 configuration (application-s3.properties)</p>
+<pre><code>#S3 store config
+s3.keysEncryptEnable=true
+# the ublickey file's path
+s3.publicKey=./public.key
+# the accesskey that get from above encrypt output.properties file content
+s3.accessKey=#####
+## the secretkey that get from above encrypt output.properties file content
+s3.secretkey=######
+##get from S3 configuration's region 
+s3.region=###### 
+##get from S3 configuration's bucket name
+s3.bucketName=######
+</code></pre><p>start singleton S3 server</p>
+<pre><code>java -jar singleton.jar
+</code></pre>
 
     
     
         <div class="chevrons">
     <div id="navigation">
-<a class="nav nav-prev" href="https://vmware.github.io/singleton/docs/" title="Documentation"> <i class="fa fa-chevron-left"></i><label>Documentation</label></a>
-    <a class="nav nav-next" href="https://vmware.github.io/singleton/docs/get-started/download-and-installation/" title="Download and Installation" style="margin-right: 0px;"><label>Download and Installation</label><i class="fa fa-chevron-right"></i></a></div>
+<a class="nav nav-prev" href="https://vmware.github.io/singleton/docs/overview/singleton-service/singleton-service-apis/" title="Singleton Service APIs"> <i class="fa fa-chevron-left"></i><label>Singleton Service APIs</label></a>
+    <a class="nav nav-next" href="https://vmware.github.io/singleton/docs/overview/singleton-sdk/" title="Singleton SDK" style="margin-right: 0px;"><label>Singleton SDK</label><i class="fa fa-chevron-right"></i></a></div>
   </div>
 
   </section>
@@ -546,10 +691,6 @@ Singleton Service 0.1.0 Binaries Downloading    filename sha1 hash branch/tag   
 
     
 
-    
-    <div class="date">
-        <i class='fa fa-calendar'></i> Last update on 24/09/2019
-    </div>
     
 
     
